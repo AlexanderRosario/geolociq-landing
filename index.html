@@ -1,0 +1,738 @@
+<!DOCTYPE html>
+<html lang="es" id="html-root">
+<head>
+  <meta charset="utf-8"/>
+  <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+  <title>GeoLocIQ | Inteligencia de Mercado para República Dominicana</title>
+  <meta name="description" content="Predice ventas y analiza ubicaciones antes de abrir. Datos reales del Censo ONE 2022 de la República Dominicana."/>
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect"/>
+  <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet"/>
+
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com?plugins=forms"></script>
+  <script>
+    tailwind.config = {
+      darkMode: "class",
+      theme: {
+        extend: {
+          colors: {
+            primary:                    "#001430",
+            "primary-container":        "#002855",
+            "on-primary":               "#ffffff",
+            "primary-fixed":            "#d6e3ff",
+            "on-primary-fixed":         "#001b3d",
+            secondary:                  "#2a6b2c",
+            "secondary-container":      "#acf4a4",
+            "on-secondary-container":   "#307231",
+            "secondary-fixed":          "#acf4a4",
+            "secondary-fixed-dim":      "#91d78a",
+            "surface":                  "#f8f9fa",
+            "surface-bright":           "#f8f9fa",
+            "surface-container-lowest": "#ffffff",
+            "surface-container-low":    "#f3f4f5",
+            "surface-container":        "#edeeef",
+            "surface-container-high":   "#e7e8e9",
+            "surface-container-highest":"#e1e3e4",
+            "on-surface":               "#191c1d",
+            "on-surface-variant":       "#43474f",
+            "outline":                  "#747780",
+            "outline-variant":          "#c4c6d0",
+            "error":                    "#ba1a1a",
+            "accent":                   "#fbbf24",
+          },
+          fontFamily: {
+            display:  ["Manrope", "sans-serif"],
+            headline: ["Manrope", "sans-serif"],
+            body:     ["Inter", "sans-serif"],
+          },
+          borderRadius: {
+            DEFAULT: "0.125rem",
+            lg:      "0.25rem",
+            xl:      "0.5rem",
+            "2xl":   "0.75rem",
+            full:    "9999px",
+          },
+        },
+      },
+    }
+  </script>
+
+  <link rel="stylesheet" href="css/styles.css"/>
+</head>
+
+<body class="bg-surface text-on-surface font-body lang-es selection:bg-primary-fixed selection:text-on-primary-fixed" id="body-root">
+
+<!-- ── URGENCY BANNER ───────────────────────────────────────────────────────── -->
+<div class="bg-secondary-container text-on-secondary-container text-center py-2.5 px-4 text-sm font-bold">
+  <span data-lang="es">🔥 Beta Limitada: Solo quedan <strong>50 cupos</strong> para Q2 2026 — <a href="#pricing" class="underline underline-offset-2">ver planes</a></span>
+  <span data-lang="en">🔥 Limited Beta: Only <strong>50 spots</strong> left for Q2 2026 — <a href="#pricing" class="underline underline-offset-2">see plans</a></span>
+</div>
+
+<!-- ── TOPBAR ────────────────────────────────────────────────────────────────── -->
+<header class="bg-surface/95 backdrop-blur sticky top-0 z-50 border-b border-outline-variant/30 transition-all">
+  <div class="flex justify-between items-center w-full px-6 md:px-12 py-4 max-w-[1440px] mx-auto gap-4">
+
+    <!-- Logo -->
+    <a href="#" class="shrink-0">
+      <div class="inline-flex items-center gap-2 bg-primary text-on-primary rounded-full px-4 py-2">
+        <div class="w-6 h-6 bg-white/15 rounded-lg flex items-center justify-center font-black text-xs font-display">G</div>
+        <span class="font-black text-base font-display tracking-tight">GeoLoc<span class="text-accent">IQ</span></span>
+      </div>
+    </a>
+
+    <!-- Desktop Nav -->
+    <nav class="hidden md:flex items-center gap-8" id="desktop-nav">
+      <a class="text-on-surface-variant font-medium font-display text-base hover:text-primary transition-colors" href="#features">
+        <span data-lang="es">Funciones</span><span data-lang="en">Features</span>
+      </a>
+      <a class="text-on-surface-variant font-medium font-display text-base hover:text-primary transition-colors" href="#how-it-works">
+        <span data-lang="es">Cómo funciona</span><span data-lang="en">How it Works</span>
+      </a>
+      <a class="text-on-surface-variant font-medium font-display text-base hover:text-primary transition-colors" href="#use-cases">
+        <span data-lang="es">Casos de uso</span><span data-lang="en">Use Cases</span>
+      </a>
+      <a class="text-on-surface-variant font-medium font-display text-base hover:text-primary transition-colors" href="#pricing">
+        <span data-lang="es">Precios</span><span data-lang="en">Pricing</span>
+      </a>
+    </nav>
+
+    <!-- Right actions -->
+    <div class="flex items-center gap-2 md:gap-3">
+
+      <!-- Language toggle -->
+      <div class="flex items-center gap-1 text-sm font-bold border border-outline-variant rounded-full px-3 py-1">
+        <button id="btn-es" onclick="setLang('es')" class="text-primary transition-colors">ES</button>
+        <span class="text-outline-variant">|</span>
+        <button id="btn-en" onclick="setLang('en')" class="text-on-surface-variant transition-colors">EN</button>
+      </div>
+
+      <!-- Login -->
+      <a href="https://geolociq-frontend.vercel.app/login"
+         class="hidden md:inline-flex px-5 py-2 rounded-xl font-bold text-sm bg-surface-container-highest text-on-surface hover:bg-surface-container-high transition-colors">
+        <span data-lang="es">Iniciar sesión</span>
+        <span data-lang="en">Login</span>
+      </a>
+
+      <!-- CTA -->
+      <a href="mailto:Junior0abc@gmail.com?subject=Demo%20Request%20GeoLocIQ"
+         class="px-5 py-2 rounded-xl font-bold text-sm bg-primary text-on-primary hover:bg-primary-container transition-colors shadow-sm">
+        <span data-lang="es">Solicitar demo</span>
+        <span data-lang="en">Request Demo</span>
+      </a>
+
+      <!-- Hamburger -->
+      <button id="hamburger" class="md:hidden w-9 h-9 flex items-center justify-center rounded-xl bg-surface-container text-on-surface" onclick="toggleMenu()">
+        <span class="material-symbols-outlined">menu</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Mobile menu -->
+  <div id="mobile-menu" class="hidden md:hidden border-t border-outline-variant/30 bg-surface">
+    <div class="flex flex-col px-6 py-4 gap-4">
+      <a class="font-medium text-on-surface-variant py-1" href="#features" onclick="toggleMenu()">
+        <span data-lang="es">Funciones</span><span data-lang="en">Features</span>
+      </a>
+      <a class="font-medium text-on-surface-variant py-1" href="#how-it-works" onclick="toggleMenu()">
+        <span data-lang="es">Cómo funciona</span><span data-lang="en">How it Works</span>
+      </a>
+      <a class="font-medium text-on-surface-variant py-1" href="#use-cases" onclick="toggleMenu()">
+        <span data-lang="es">Casos de uso</span><span data-lang="en">Use Cases</span>
+      </a>
+      <a class="font-medium text-on-surface-variant py-1" href="#pricing" onclick="toggleMenu()">
+        <span data-lang="es">Precios</span><span data-lang="en">Pricing</span>
+      </a>
+      <div class="flex gap-3 pt-2 border-t border-outline-variant/30">
+        <a href="https://geolociq-frontend.vercel.app/login"
+           class="flex-1 text-center py-2.5 rounded-xl font-bold text-sm bg-surface-container-highest text-on-surface">
+          <span data-lang="es">Iniciar sesión</span><span data-lang="en">Login</span>
+        </a>
+        <a href="mailto:Junior0abc@gmail.com?subject=Demo%20Request%20GeoLocIQ"
+           class="flex-1 text-center py-2.5 rounded-xl font-bold text-sm bg-primary text-on-primary">
+          <span data-lang="es">Solicitar demo</span><span data-lang="en">Request Demo</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</header>
+
+<!-- ── HERO ──────────────────────────────────────────────────────────────────── -->
+<section class="relative min-h-[800px] flex items-center overflow-hidden bg-surface">
+  <!-- Background image -->
+  <div class="absolute inset-0 z-0">
+    <div class="absolute inset-0 bg-gradient-to-r from-surface via-surface/80 to-transparent z-10"></div>
+    <img class="w-full h-full object-cover opacity-20"
+         src="https://lh3.googleusercontent.com/aida-public/AB6AXuCPAW9psJQb6lzSmY1UugnEG3TdHkLtNNbzJ8v5TeslFdOkT-yrHGmRq1yvj1TjZqGwsHlEdauNtr6Tljm6I_Ugp1Dq1ZqgLdqoi3etgttpXtSaV3fpZ071kWqI-p6qDTwc-iR2GWAapHc3gsndxLChXqdvOIOBjojhw-A8LNWmWgj3gclHU4XRoHvBeCdavm7XP2YEwrLbgzgei1D218SRPHGH9jQBvXWvqeKwvc50RVBaXPCMPHwk7bGHS9arD2-o4R1Jbfw2VEZM"
+         alt="Mapa topográfico abstracto de República Dominicana con datos geodemográficos"/>
+  </div>
+
+  <div class="relative z-20 max-w-[1440px] mx-auto px-6 md:px-12 py-20 grid lg:grid-cols-2 gap-12 items-center w-full">
+    <div class="space-y-8">
+
+      <!-- Badge -->
+      <div class="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-secondary-container text-on-secondary-container text-xs font-bold uppercase tracking-widest">
+        <span class="material-symbols-outlined text-sm" style="font-variation-settings:'FILL' 1;">verified</span>
+        <span data-lang="es">Datos oficiales Censo ONE 2022</span>
+        <span data-lang="en">Official ONE 2022 Census Data</span>
+      </div>
+
+      <!-- Headline -->
+      <h1 class="text-5xl md:text-6xl font-extrabold font-display leading-[1.1] tracking-tighter text-primary">
+        <span data-lang="es">Sabe exactamente <span class="text-secondary">dónde están tus clientes</span> antes de abrir.</span>
+        <span data-lang="en">Know exactly <span class="text-secondary">where your customers are</span> before you open.</span>
+      </h1>
+
+      <!-- Body -->
+      <p class="text-lg text-on-surface-variant max-w-xl leading-relaxed">
+        <span data-lang="es">Predice ventas para cualquier ubicación en República Dominicana. Datos reales del Censo 2022 + análisis de competencia + tráfico peatonal — todo en el mapa.</span>
+        <span data-lang="en">Predict sales for any location in the Dominican Republic. Real 2022 Census data + competitor analysis + foot traffic — all on the map.</span>
+      </p>
+
+      <!-- Trust badges -->
+      <div class="flex flex-wrap gap-x-6 gap-y-2">
+        <div class="flex items-center gap-1.5 text-sm text-secondary font-semibold">
+          <span class="material-symbols-outlined text-base" style="font-variation-settings:'FILL' 1;">check_circle</span>
+          <span data-lang="es">14 días gratis</span><span data-lang="en">Free 14-day trial</span>
+        </div>
+        <div class="flex items-center gap-1.5 text-sm text-secondary font-semibold">
+          <span class="material-symbols-outlined text-base" style="font-variation-settings:'FILL' 1;">check_circle</span>
+          <span data-lang="es">Sin tarjeta de crédito</span><span data-lang="en">No credit card required</span>
+        </div>
+        <div class="flex items-center gap-1.5 text-sm text-secondary font-semibold">
+          <span class="material-symbols-outlined text-base" style="font-variation-settings:'FILL' 1;">check_circle</span>
+          <span data-lang="es">Listo en 5 minutos</span><span data-lang="en">Setup in 5 minutes</span>
+        </div>
+      </div>
+
+      <!-- CTAs -->
+      <div class="flex flex-wrap items-center gap-4 pt-2">
+        <a href="https://geolociq-frontend.vercel.app/register"
+           class="px-8 py-4 bg-primary text-on-primary rounded-xl font-bold text-base shadow-lg hover:-translate-y-0.5 transition-all">
+          <span data-lang="es">Comenzar gratis</span>
+          <span data-lang="en">Start for free</span>
+        </a>
+        <a href="mailto:Junior0abc@gmail.com?subject=Demo%20Request%20GeoLocIQ"
+           class="px-7 py-4 text-primary font-bold text-base flex items-center gap-2 hover:gap-3 transition-all">
+          <span data-lang="es">Ver demo en vivo</span>
+          <span data-lang="en">See live demo</span>
+          <span class="material-symbols-outlined text-base">arrow_forward</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- Stats bento -->
+    <div class="grid grid-cols-2 gap-4">
+      <div class="bg-surface-container-lowest p-7 rounded-xl shadow-sm space-y-1.5 lg:translate-y-6">
+        <div class="text-secondary font-black text-3xl font-display">10.7M+</div>
+        <div class="text-xs font-bold text-on-surface-variant uppercase tracking-widest">
+          <span data-lang="es">Habitantes mapeados</span><span data-lang="en">Residents Mapped</span>
+        </div>
+      </div>
+      <div class="bg-primary text-on-primary p-7 rounded-xl shadow-lg space-y-1.5">
+        <div class="text-secondary-fixed font-black text-3xl font-display">2 min</div>
+        <div class="text-xs font-bold opacity-80 uppercase tracking-widest">
+          <span data-lang="es">Por análisis</span><span data-lang="en">Per Analysis</span>
+        </div>
+      </div>
+      <div class="bg-surface-container-low p-7 rounded-xl space-y-1.5 lg:translate-y-6">
+        <div class="text-primary font-black text-3xl font-display">1,200+</div>
+        <div class="text-xs font-bold text-on-surface-variant uppercase tracking-widest">
+          <span data-lang="es">Micro-sectores</span><span data-lang="en">Micro-Sectors</span>
+        </div>
+      </div>
+      <div class="bg-surface-container-lowest p-7 rounded-xl shadow-sm space-y-1.5">
+        <div class="text-secondary font-black text-3xl font-display">NSE A–E</div>
+        <div class="text-xs font-bold text-on-surface-variant uppercase tracking-widest">
+          <span data-lang="es">Segmentación</span><span data-lang="en">Segmentation</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── HOW IT WORKS ───────────────────────────────────────────────────────────── -->
+<section id="how-it-works" class="py-24 bg-surface-container-low">
+  <div class="max-w-[1440px] mx-auto px-6 md:px-12">
+    <div class="text-center mb-16 space-y-3">
+      <span class="text-xs font-black text-secondary uppercase tracking-[0.3em]">
+        <span data-lang="es">Cómo funciona</span><span data-lang="en">How it Works</span>
+      </span>
+      <h2 class="text-4xl font-extrabold font-display text-primary">
+        <span data-lang="es">Tres pasos. Decisión tomada.</span>
+        <span data-lang="en">Three Steps. Decision Made.</span>
+      </h2>
+    </div>
+    <div class="grid md:grid-cols-3 gap-8 relative">
+      <!-- Connector line (desktop) -->
+      <div class="hidden md:block absolute top-12 left-1/6 right-1/6 h-px bg-outline-variant/50 -z-0"></div>
+
+      <!-- Step 1 -->
+      <div class="flex flex-col items-center text-center gap-4 relative">
+        <div class="w-24 h-24 bg-primary text-on-primary rounded-xl flex flex-col items-center justify-center shadow-lg z-10">
+          <span class="material-symbols-outlined text-3xl">pin_drop</span>
+          <span class="text-xs font-bold mt-1">01</span>
+        </div>
+        <h3 class="text-xl font-bold font-display text-primary">
+          <span data-lang="es">Haz clic en el mapa</span><span data-lang="en">Click on the Map</span>
+        </h3>
+        <p class="text-on-surface-variant text-sm leading-relaxed max-w-xs">
+          <span data-lang="es">Selecciona cualquier punto en República Dominicana. Ajusta el radio de influencia.</span>
+          <span data-lang="en">Select any point in the Dominican Republic. Adjust the influence radius.</span>
+        </p>
+      </div>
+
+      <!-- Step 2 -->
+      <div class="flex flex-col items-center text-center gap-4 relative">
+        <div class="w-24 h-24 bg-secondary text-on-primary rounded-xl flex flex-col items-center justify-center shadow-lg z-10">
+          <span class="material-symbols-outlined text-3xl">storefront</span>
+          <span class="text-xs font-bold mt-1">02</span>
+        </div>
+        <h3 class="text-xl font-bold font-display text-primary">
+          <span data-lang="es">Define tu negocio</span><span data-lang="en">Define your Business</span>
+        </h3>
+        <p class="text-on-surface-variant text-sm leading-relaxed max-w-xs">
+          <span data-lang="es">Tipo de negocio, ticket promedio, público objetivo. 30 segundos de configuración.</span>
+          <span data-lang="en">Business type, average ticket, target audience. 30-second setup.</span>
+        </p>
+      </div>
+
+      <!-- Step 3 -->
+      <div class="flex flex-col items-center text-center gap-4 relative">
+        <div class="w-24 h-24 bg-primary-container text-on-primary rounded-xl flex flex-col items-center justify-center shadow-lg z-10">
+          <span class="material-symbols-outlined text-3xl">trending_up</span>
+          <span class="text-xs font-bold mt-1">03</span>
+        </div>
+        <h3 class="text-xl font-bold font-display text-primary">
+          <span data-lang="es">Obtén la predicción</span><span data-lang="en">Get the Prediction</span>
+        </h3>
+        <p class="text-on-surface-variant text-sm leading-relaxed max-w-xs">
+          <span data-lang="es">Ventas estimadas, score de viabilidad, análisis de competencia y demografía en segundos.</span>
+          <span data-lang="en">Estimated sales, viability score, competitor analysis, and demographics in seconds.</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── FEATURES ───────────────────────────────────────────────────────────────── -->
+<section id="features" class="py-28 bg-surface">
+  <div class="max-w-[1440px] mx-auto px-6 md:px-12">
+    <div class="mb-16 space-y-3">
+      <h2 class="text-4xl font-extrabold font-display tracking-tight text-primary">
+        <span data-lang="es">Visibilidad total del mercado</span>
+        <span data-lang="en">Total Market Visibility</span>
+      </h2>
+      <p class="text-on-surface-variant max-w-2xl text-lg">
+        <span data-lang="es">Tres pilares de inteligencia para ver el mercado dominicano desde todos los ángulos.</span>
+        <span data-lang="en">Three intelligence pillars to see the Dominican market from every angle.</span>
+      </p>
+    </div>
+
+    <div class="grid md:grid-cols-3 gap-8">
+      <!-- Feature 1 -->
+      <div class="bg-surface-container-lowest p-10 rounded-xl space-y-5 hover:shadow-xl transition-all duration-300">
+        <div class="w-14 h-14 bg-primary text-on-primary rounded-xl flex items-center justify-center">
+          <span class="material-symbols-outlined text-3xl">analytics</span>
+        </div>
+        <h3 class="text-2xl font-bold font-display text-primary">
+          <span data-lang="es">Demografía del Censo 2022</span>
+          <span data-lang="en">2022 Census Demographics</span>
+        </h3>
+        <p class="text-on-surface-variant leading-relaxed text-sm">
+          <span data-lang="es">Población real, hogares, NSE y poder adquisitivo a nivel de barrio — directo del Censo ONE 2022 validado.</span>
+          <span data-lang="en">Real population, households, NSE and purchasing power at neighborhood level — from the validated ONE 2022 Census.</span>
+        </p>
+        <ul class="space-y-2.5 pt-2">
+          <li class="flex items-center gap-2 text-sm font-medium text-on-surface">
+            <span class="material-symbols-outlined text-secondary text-base" style="font-variation-settings:'FILL' 1;">check_circle</span>
+            <span data-lang="es">Segmentación NSE A–E</span><span data-lang="en">NSE A–E Segmentation</span>
+          </li>
+          <li class="flex items-center gap-2 text-sm font-medium text-on-surface">
+            <span class="material-symbols-outlined text-secondary text-base" style="font-variation-settings:'FILL' 1;">check_circle</span>
+            <span data-lang="es">Composición del hogar</span><span data-lang="en">Household Composition</span>
+          </li>
+          <li class="flex items-center gap-2 text-sm font-medium text-on-surface">
+            <span class="material-symbols-outlined text-secondary text-base" style="font-variation-settings:'FILL' 1;">check_circle</span>
+            <span data-lang="es">Distribución por edades</span><span data-lang="en">Age Distribution</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Feature 2 -->
+      <div class="bg-surface-container-lowest p-10 rounded-xl space-y-5 hover:shadow-xl transition-all duration-300 ring-2 ring-secondary/30">
+        <div class="w-14 h-14 bg-secondary text-on-primary rounded-xl flex items-center justify-center">
+          <span class="material-symbols-outlined text-3xl">trending_up</span>
+        </div>
+        <h3 class="text-2xl font-bold font-display text-primary">
+          <span data-lang="es">Motor de Predicción de Ventas</span>
+          <span data-lang="en">Sales Prediction Engine</span>
+        </h3>
+        <p class="text-on-surface-variant leading-relaxed text-sm">
+          <span data-lang="es">Nuestro algoritmo estima las ventas mensuales reales de tu negocio basándose en población calificada, competencia detectada y canasta BCRD.</span>
+          <span data-lang="en">Our algorithm estimates real monthly sales for your business based on qualified population, detected competition, and BCRD basket data.</span>
+        </p>
+        <ul class="space-y-2.5 pt-2">
+          <li class="flex items-center gap-2 text-sm font-medium text-on-surface">
+            <span class="material-symbols-outlined text-secondary text-base" style="font-variation-settings:'FILL' 1;">check_circle</span>
+            <span data-lang="es">Ventas estimadas mensuales</span><span data-lang="en">Monthly Sales Estimate</span>
+          </li>
+          <li class="flex items-center gap-2 text-sm font-medium text-on-surface">
+            <span class="material-symbols-outlined text-secondary text-base" style="font-variation-settings:'FILL' 1;">check_circle</span>
+            <span data-lang="es">Índice de saturación de competencia</span><span data-lang="en">Competitor Saturation Index</span>
+          </li>
+          <li class="flex items-center gap-2 text-sm font-medium text-on-surface">
+            <span class="material-symbols-outlined text-secondary text-base" style="font-variation-settings:'FILL' 1;">check_circle</span>
+            <span data-lang="es">Score de viabilidad 0–100</span><span data-lang="en">Viability Score 0–100</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Feature 3 -->
+      <div class="bg-surface-container-lowest p-10 rounded-xl space-y-5 hover:shadow-xl transition-all duration-300">
+        <div class="w-14 h-14 bg-primary text-on-primary rounded-xl flex items-center justify-center">
+          <span class="material-symbols-outlined text-3xl">map</span>
+        </div>
+        <h3 class="text-2xl font-bold font-display text-primary">
+          <span data-lang="es">GIS Interactivo</span>
+          <span data-lang="en">Interactive GIS</span>
+        </h3>
+        <p class="text-on-surface-variant leading-relaxed text-sm">
+          <span data-lang="es">Mapa en tiempo real con heat maps, radio de influencia ajustable, White Space (zonas sin competencia) e isócronas de acceso vial.</span>
+          <span data-lang="en">Real-time map with heat maps, adjustable influence radius, White Space (competition-free zones), and road access isochrones.</span>
+        </p>
+        <ul class="space-y-2.5 pt-2">
+          <li class="flex items-center gap-2 text-sm font-medium text-on-surface">
+            <span class="material-symbols-outlined text-secondary text-base" style="font-variation-settings:'FILL' 1;">check_circle</span>
+            <span data-lang="es">Comparador de ubicaciones A vs B</span><span data-lang="en">Location Comparator A vs B</span>
+          </li>
+          <li class="flex items-center gap-2 text-sm font-medium text-on-surface">
+            <span class="material-symbols-outlined text-secondary text-base" style="font-variation-settings:'FILL' 1;">check_circle</span>
+            <span data-lang="es">Zonas sin competencia (White Space)</span><span data-lang="en">Competition-free Zones (White Space)</span>
+          </li>
+          <li class="flex items-center gap-2 text-sm font-medium text-on-surface">
+            <span class="material-symbols-outlined text-secondary text-base" style="font-variation-settings:'FILL' 1;">check_circle</span>
+            <span data-lang="es">Historial de análisis guardado</span><span data-lang="en">Saved Analysis History</span>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRODUCT VISUAL ─────────────────────────────────────────────────────────── -->
+<section class="py-20 bg-primary relative overflow-hidden">
+  <div class="max-w-[1440px] mx-auto px-6 md:px-12 relative z-10">
+    <div class="grid lg:grid-cols-5 gap-12 items-center">
+      <div class="lg:col-span-2 space-y-7">
+        <h2 class="text-4xl md:text-5xl font-extrabold font-display text-white leading-tight">
+          <span data-lang="es">El mapa que toma decisiones contigo</span>
+          <span data-lang="en">The Map that Decides with You</span>
+        </h2>
+        <p class="text-primary-fixed/80 text-lg leading-relaxed">
+          <span data-lang="es">Cambia entre capas demográficas, competencia y tráfico en tiempo real. Compara dos ubicaciones lado a lado en segundos.</span>
+          <span data-lang="en">Switch between demographic layers, competition, and traffic in real time. Compare two locations side by side in seconds.</span>
+        </p>
+        <div class="space-y-3">
+          <div class="flex items-start gap-3 p-4 rounded-xl bg-primary-container border border-outline-variant/10">
+            <span class="material-symbols-outlined text-secondary-fixed mt-0.5">layers</span>
+            <div>
+              <div class="text-white font-bold text-sm">
+                <span data-lang="es">Capas dinámicas</span><span data-lang="en">Dynamic Layers</span>
+              </div>
+              <p class="text-xs text-primary-fixed/60 mt-0.5">
+                <span data-lang="es">NSE, competencia, movilidad y White Space superpuestos.</span>
+                <span data-lang="en">NSE, competition, mobility, and White Space overlaid.</span>
+              </p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3 p-4 rounded-xl bg-primary-container border border-outline-variant/10">
+            <span class="material-symbols-outlined text-secondary-fixed mt-0.5">download_for_offline</span>
+            <div>
+              <div class="text-white font-bold text-sm">
+                <span data-lang="es">Historial y exportación</span><span data-lang="en">History and Export</span>
+              </div>
+              <p class="text-xs text-primary-fixed/60 mt-0.5">
+                <span data-lang="es">Guarda análisis y exporta reportes PDF con un clic.</span>
+                <span data-lang="en">Save analyses and export PDF reports with one click.</span>
+              </p>
+            </div>
+          </div>
+        </div>
+        <a href="https://geolociq-frontend.vercel.app/login"
+           class="inline-flex items-center gap-2 px-6 py-3 bg-secondary text-on-primary rounded-xl font-bold text-sm hover:opacity-90 transition-opacity">
+          <span data-lang="es">Ver el dashboard en vivo</span>
+          <span data-lang="en">See live dashboard</span>
+          <span class="material-symbols-outlined text-base">open_in_new</span>
+        </a>
+      </div>
+
+      <div class="lg:col-span-3 relative">
+        <div class="bg-surface-container-highest/10 rounded-2xl p-3 backdrop-blur border border-white/10 shadow-2xl overflow-visible">
+          <img class="rounded-xl shadow-2xl w-full"
+               src="https://lh3.googleusercontent.com/aida-public/AB6AXuBeuf6_Dmcq8IBzUrCrIbtzwQa6P8lESFwzS1YdQ9rvIXt-69SuX62EaCB4a7FH2yyoy5RYgfCneTZlTxivhiLcL6kAuF7U7PwDnPDHwcuaU-nJf0pPVgSXi7qzRJB4h1A07rJZSc675FyVjkVi-LIvj4_qpw6KT8y-CDfCHgTQhpOt3yLDWuwgNfcLi0_82JNM6xJaSPegeTvsBrzgZN6zpDPsUPUJJx47A8pSOaKKTedXJYKIuUbx71fv3ttHf8b4aqgEhvvSVgo-"
+               alt="GeoLocIQ dashboard mostrando mapa de Santo Domingo"/>
+          <!-- Floating metric card -->
+          <div class="absolute -bottom-4 -left-4 md:-left-8 glass-panel p-5 rounded-xl border border-white/40 shadow-xl w-56 space-y-2">
+            <div class="flex justify-between items-center">
+              <span class="text-[10px] font-black uppercase tracking-tighter text-primary">
+                <span data-lang="es">Potencial del área</span><span data-lang="en">Area Potential</span>
+              </span>
+              <span class="text-secondary font-bold text-xs">+12.4%</span>
+            </div>
+            <div class="text-2xl font-black font-display text-primary tracking-tighter">Naco, DN</div>
+            <div class="h-1.5 w-full bg-surface-container-high rounded-full overflow-hidden">
+              <div class="h-full bg-secondary w-3/4 rounded-full"></div>
+            </div>
+            <div class="text-[10px] text-on-surface-variant font-medium italic">
+              <span data-lang="es">Alta concentración NSE A/B detectada.</span>
+              <span data-lang="en">High NSE A/B clustering detected.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="absolute -bottom-24 -right-24 w-96 h-96 bg-secondary/10 rounded-full blur-[100px]"></div>
+  <div class="absolute -top-24 -left-24 w-96 h-96 bg-primary-container rounded-full blur-[100px]"></div>
+</section>
+
+<!-- ── USE CASES ──────────────────────────────────────────────────────────────── -->
+<section id="use-cases" class="py-28 bg-surface">
+  <div class="max-w-[1440px] mx-auto px-6 md:px-12">
+    <div class="text-center mb-16">
+      <span class="text-xs font-black text-secondary uppercase tracking-[0.3em]">
+        <span data-lang="es">Casos de uso</span><span data-lang="en">Use Cases</span>
+      </span>
+      <h2 class="text-4xl font-extrabold font-display text-primary mt-3">
+        <span data-lang="es">Para cada tipo de expansión</span>
+        <span data-lang="en">For Every Expansion Type</span>
+      </h2>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-12">
+      <div class="space-y-3">
+        <div class="text-6xl font-black text-surface-container-highest select-none font-display">01</div>
+        <h3 class="text-2xl font-bold font-display text-primary">
+          <span data-lang="es">Retail y Supermercados</span><span data-lang="en">Retail & Supermarkets</span>
+        </h3>
+        <p class="text-on-surface-variant leading-relaxed text-sm">
+          <span data-lang="es">Identifica dónde viven tus clientes de alto valor y dónde la competencia es más débil. Optimiza tu red de sucursales.</span>
+          <span data-lang="en">Identify where your high-value customers live and where competition is weakest. Optimize your branch network.</span>
+        </p>
+      </div>
+      <div class="space-y-3">
+        <div class="text-6xl font-black text-surface-container-highest select-none font-display">02</div>
+        <h3 class="text-2xl font-bold font-display text-primary">
+          <span data-lang="es">Restaurantes y Franquicias</span><span data-lang="en">Restaurants & Franchises</span>
+        </h3>
+        <p class="text-on-surface-variant leading-relaxed text-sm">
+          <span data-lang="es">Encuentra zonas con alta densidad peatonal, poder adquisitivo compatible y baja saturación de tu categoría.</span>
+          <span data-lang="en">Find zones with high foot traffic, compatible purchasing power, and low saturation in your category.</span>
+        </p>
+      </div>
+      <div class="space-y-3">
+        <div class="text-6xl font-black text-surface-container-highest select-none font-display">03</div>
+        <h3 class="text-2xl font-bold font-display text-primary">
+          <span data-lang="es">Servicios Financieros</span><span data-lang="en">Financial Services</span>
+        </h3>
+        <p class="text-on-surface-variant leading-relaxed text-sm">
+          <span data-lang="es">Evalúa riesgo de mercado y potencial crediticio por micro-zona usando correlación de datos censales a nivel institucional.</span>
+          <span data-lang="en">Assess market risk and credit potential by micro-zone using institutional-level census data correlation.</span>
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ── PRICING ────────────────────────────────────────────────────────────────── -->
+<section id="pricing" class="py-24 bg-surface-container-low">
+  <div class="max-w-[1440px] mx-auto px-6 md:px-12">
+    <div class="text-center mb-14 space-y-3">
+      <span class="text-xs font-black text-secondary uppercase tracking-[0.3em]">
+        <span data-lang="es">Precios</span><span data-lang="en">Pricing</span>
+      </span>
+      <h2 class="text-4xl font-extrabold font-display text-primary">
+        <span data-lang="es">Desde gratis hasta enterprise</span>
+        <span data-lang="en">From free to enterprise</span>
+      </h2>
+      <p class="text-on-surface-variant">
+        <span data-lang="es">Sin contratos anuales para empezar. Cancela cuando quieras.</span>
+        <span data-lang="en">No annual contracts to get started. Cancel anytime.</span>
+      </p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-6 max-w-4xl mx-auto">
+
+      <!-- Explorador -->
+      <div class="bg-surface-container-lowest rounded-xl p-8 flex flex-col gap-5 border border-outline-variant/30">
+        <div>
+          <span class="text-xs font-black uppercase tracking-wider text-outline">Explorador</span>
+          <div class="text-3xl font-black font-display text-primary mt-2">
+            <span data-lang="es">Gratis</span><span data-lang="en">Free</span>
+          </div>
+          <p class="text-xs text-on-surface-variant mt-1.5">
+            <span data-lang="es">Para equipos en fase de prospección</span>
+            <span data-lang="en">For teams in the prospecting phase</span>
+          </p>
+        </div>
+        <ul class="space-y-2 flex-1 text-sm">
+          <li class="flex gap-2"><span class="text-secondary font-bold">✓</span> <span data-lang="es">30 análisis/mes</span><span data-lang="en">30 analyses/month</span></li>
+          <li class="flex gap-2"><span class="text-secondary font-bold">✓</span> <span data-lang="es">Radio máx. 2 km</span><span data-lang="en">Max. 2 km radius</span></li>
+          <li class="flex gap-2"><span class="text-secondary font-bold">✓</span> <span data-lang="es">Mapa + historial</span><span data-lang="en">Map + history</span></li>
+          <li class="flex gap-2 text-outline"><span>—</span> <span data-lang="es">Predicción de ventas</span><span data-lang="en">Sales prediction</span></li>
+        </ul>
+        <a href="https://geolociq-frontend.vercel.app/register"
+           class="block text-center py-2.5 rounded-xl font-bold text-sm bg-surface-container-high text-on-surface hover:bg-surface-container-highest transition-colors">
+          <span data-lang="es">Comenzar gratis</span><span data-lang="en">Start free</span>
+        </a>
+      </div>
+
+      <!-- Estratega -->
+      <div class="bg-primary rounded-xl p-8 flex flex-col gap-5 relative shadow-xl ring-2 ring-secondary/30">
+        <div class="absolute -top-3 left-1/2 -translate-x-1/2 bg-secondary text-on-primary text-[10px] font-black uppercase tracking-widest px-3 py-1 rounded-full">
+          Popular
+        </div>
+        <div>
+          <span class="text-xs font-black uppercase tracking-wider text-primary-fixed/60">Estratega</span>
+          <div class="text-3xl font-black font-display text-white mt-2">
+            <span data-lang="es">Contactar</span><span data-lang="en">Contact Us</span>
+          </div>
+          <p class="text-xs text-primary-fixed/60 mt-1.5">
+            <span data-lang="es">Para análisis profundo</span><span data-lang="en">For deep analysis</span>
+          </p>
+        </div>
+        <ul class="space-y-2 flex-1 text-sm text-primary-fixed">
+          <li class="flex gap-2"><span class="text-secondary-fixed font-bold">✓</span> <span data-lang="es">150 análisis/mes</span><span data-lang="en">150 analyses/month</span></li>
+          <li class="flex gap-2"><span class="text-secondary-fixed font-bold">✓</span> <span data-lang="es">Radio máx. 5 km</span><span data-lang="en">Max. 5 km radius</span></li>
+          <li class="flex gap-2"><span class="text-secondary-fixed font-bold">✓</span> <span data-lang="es">Predicción de ventas</span><span data-lang="en">Sales prediction</span></li>
+          <li class="flex gap-2"><span class="text-secondary-fixed font-bold">✓</span> <span data-lang="es">Competencia + NSE</span><span data-lang="en">Competition + NSE</span></li>
+          <li class="flex gap-2"><span class="text-secondary-fixed font-bold">✓</span> <span data-lang="es">Exportar PDF</span><span data-lang="en">Export PDF</span></li>
+        </ul>
+        <a href="mailto:Junior0abc@gmail.com?subject=Upgrade%20Estratega%20GeoLocIQ"
+           class="block text-center py-2.5 rounded-xl font-bold text-sm bg-secondary text-on-primary hover:opacity-90 transition-opacity">
+          <span data-lang="es">Contactar ventas</span><span data-lang="en">Contact Sales</span>
+        </a>
+      </div>
+
+      <!-- Comando -->
+      <div class="bg-surface-container-lowest rounded-xl p-8 flex flex-col gap-5 border border-outline-variant/30">
+        <div>
+          <span class="text-xs font-black uppercase tracking-wider text-outline">Comando</span>
+          <div class="text-3xl font-black font-display text-primary mt-2">
+            <span data-lang="es">Contactar</span><span data-lang="en">Contact Us</span>
+          </div>
+          <p class="text-xs text-on-surface-variant mt-1.5">
+            <span data-lang="es">Para cadenas grandes</span><span data-lang="en">For large chains</span>
+          </p>
+        </div>
+        <ul class="space-y-2 flex-1 text-sm">
+          <li class="flex gap-2"><span class="text-secondary font-bold">✓</span> <span data-lang="es">Análisis ilimitados</span><span data-lang="en">Unlimited analyses</span></li>
+          <li class="flex gap-2"><span class="text-secondary font-bold">✓</span> <span data-lang="es">Usuarios ilimitados</span><span data-lang="en">Unlimited users</span></li>
+          <li class="flex gap-2"><span class="text-secondary font-bold">✓</span> <span data-lang="es">Motor ML/Neural</span><span data-lang="en">ML/Neural engine</span></li>
+          <li class="flex gap-2"><span class="text-secondary font-bold">✓</span> <span data-lang="es">API access</span><span data-lang="en">API access</span></li>
+          <li class="flex gap-2"><span class="text-secondary font-bold">✓</span> <span data-lang="es">Dashboard ejecutivo</span><span data-lang="en">Executive dashboard</span></li>
+        </ul>
+        <a href="mailto:Junior0abc@gmail.com?subject=Upgrade%20Comando%20GeoLocIQ"
+           class="block text-center py-2.5 rounded-xl font-bold text-sm bg-primary text-on-primary hover:bg-primary-container transition-colors">
+          <span data-lang="es">Contactar ventas</span><span data-lang="en">Contact Sales</span>
+        </a>
+      </div>
+    </div>
+
+    <div class="text-center mt-8">
+      <a href="https://geolociq-frontend.vercel.app/planes"
+         class="text-sm text-secondary font-bold hover:underline underline-offset-4">
+        <span data-lang="es">Ver comparación completa de planes →</span>
+        <span data-lang="en">See full plan comparison →</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ── FINAL CTA ───────────────────────────────────────────────────────────────── -->
+<section class="py-24 bg-primary text-center relative overflow-hidden">
+  <div class="relative z-10 max-w-2xl mx-auto px-6 space-y-7">
+    <h2 class="text-4xl md:text-5xl font-extrabold font-display text-white leading-tight">
+      <span data-lang="es">Tu próxima apertura empieza con datos reales.</span>
+      <span data-lang="en">Your next opening starts with real data.</span>
+    </h2>
+    <p class="text-primary-fixed/70 text-lg">
+      <span data-lang="es">Únete a los equipos de expansión que ya toman decisiones con inteligencia geoespacial.</span>
+      <span data-lang="en">Join the expansion teams already making decisions with geospatial intelligence.</span>
+    </p>
+    <div class="flex flex-wrap justify-center gap-4">
+      <a href="https://geolociq-frontend.vercel.app/register"
+         class="px-8 py-4 bg-secondary text-on-primary rounded-xl font-bold text-base hover:opacity-90 transition-opacity shadow-lg">
+        <span data-lang="es">Crear cuenta gratis</span><span data-lang="en">Create free account</span>
+      </a>
+      <a href="mailto:Junior0abc@gmail.com?subject=Demo%20Request%20GeoLocIQ"
+         class="px-8 py-4 bg-primary-container text-white rounded-xl font-bold text-base hover:bg-primary-container/80 transition-colors">
+        <span data-lang="es">Hablar con ventas</span><span data-lang="en">Talk to sales</span>
+      </a>
+    </div>
+    <p class="text-primary-fixed/40 text-xs">
+      <span data-lang="es">✓ Sin tarjeta de crédito · ✓ 14 días gratis · ✓ Cancela cuando quieras</span>
+      <span data-lang="en">✓ No credit card · ✓ 14-day free trial · ✓ Cancel anytime</span>
+    </p>
+  </div>
+  <div class="absolute -bottom-20 -right-20 w-80 h-80 bg-secondary/10 rounded-full blur-[80px]"></div>
+  <div class="absolute -top-20 -left-20 w-80 h-80 bg-primary-container rounded-full blur-[80px]"></div>
+</section>
+
+<!-- ── FOOTER ─────────────────────────────────────────────────────────────────── -->
+<footer class="bg-surface-container-low py-14 px-6 md:px-12 border-t border-outline-variant/20">
+  <div class="max-w-[1440px] mx-auto flex flex-col md:flex-row justify-between gap-10">
+    <div class="max-w-xs space-y-4">
+      <div class="inline-flex items-center gap-2 bg-primary text-on-primary rounded-full px-3 py-1.5">
+        <div class="w-5 h-5 bg-white/15 rounded-md flex items-center justify-center font-black text-[10px] font-display">G</div>
+        <span class="font-black text-sm font-display tracking-tight">GeoLoc<span class="text-accent">IQ</span></span>
+      </div>
+      <p class="text-on-surface-variant text-sm leading-relaxed">
+        <span data-lang="es">Inteligencia de mercado para República Dominicana. Datos del Censo ONE 2022, refinados para líderes.</span>
+        <span data-lang="en">Market intelligence for the Dominican Republic. ONE 2022 Census data, refined for leaders.</span>
+      </p>
+    </div>
+
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-8 text-sm">
+      <div class="space-y-3">
+        <h4 class="text-primary font-bold uppercase tracking-wider text-xs">
+          <span data-lang="es">Plataforma</span><span data-lang="en">Platform</span>
+        </h4>
+        <ul class="space-y-2 text-on-surface-variant">
+          <li><a href="#features" class="hover:text-primary transition-colors"><span data-lang="es">Funciones</span><span data-lang="en">Features</span></a></li>
+          <li><a href="#pricing" class="hover:text-primary transition-colors"><span data-lang="es">Precios</span><span data-lang="en">Pricing</span></a></li>
+          <li><a href="https://geolociq-frontend.vercel.app/login" class="hover:text-primary transition-colors"><span data-lang="es">Iniciar sesión</span><span data-lang="en">Login</span></a></li>
+        </ul>
+      </div>
+      <div class="space-y-3">
+        <h4 class="text-primary font-bold uppercase tracking-wider text-xs">
+          <span data-lang="es">Empresa</span><span data-lang="en">Company</span>
+        </h4>
+        <ul class="space-y-2 text-on-surface-variant">
+          <li><a href="mailto:Junior0abc@gmail.com" class="hover:text-primary transition-colors"><span data-lang="es">Contacto</span><span data-lang="en">Contact</span></a></li>
+          <li><a href="https://geolociq-frontend.vercel.app/planes" class="hover:text-primary transition-colors"><span data-lang="es">Planes</span><span data-lang="en">Plans</span></a></li>
+        </ul>
+      </div>
+      <div class="space-y-3">
+        <h4 class="text-primary font-bold uppercase tracking-wider text-xs">Legal</h4>
+        <ul class="space-y-2 text-on-surface-variant">
+          <li><a href="#" class="hover:text-primary transition-colors"><span data-lang="es">Privacidad</span><span data-lang="en">Privacy</span></a></li>
+          <li><a href="#" class="hover:text-primary transition-colors"><span data-lang="es">Términos</span><span data-lang="en">Terms</span></a></li>
+        </ul>
+      </div>
+    </div>
+  </div>
+  <div class="max-w-[1440px] mx-auto mt-10 pt-6 border-t border-outline-variant/20 text-xs text-outline text-center">
+    © 2025 GeoLocIQ. <span data-lang="es">Todos los derechos reservados.</span><span data-lang="en">All rights reserved.</span>
+  </div>
+</footer>
+
+<!-- ── JS ─────────────────────────────────────────────────────────────────────── -->
+<script src="js/analytics.js"></script>
+<script src="js/main.js"></script>
+
+</body>
+</html>
